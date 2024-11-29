@@ -8,7 +8,7 @@ namespace MonoGame_Topic_6___Keyboard_Inputs
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        Texture2D pacTexture;
+        Texture2D pacTextureRight, pacTextureLeft, pacTextureUp, pacTextureDown, pacTextureSleep;
         Rectangle pacLocation;
         Vector2 pacSpeed;
         KeyboardState keyboardState;
@@ -31,7 +31,11 @@ namespace MonoGame_Topic_6___Keyboard_Inputs
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            pacTexture = Content.Load<Texture2D>("PacRight");
+            pacTextureRight = Content.Load<Texture2D>("PacRight");
+            pacTextureLeft = Content.Load<Texture2D>("PacLeft");
+            pacTextureUp = Content.Load<Texture2D>("PacUp");
+            pacTextureDown = Content.Load<Texture2D>("PacDown");
+            pacTextureSleep = Content.Load<Texture2D>("PacSleep");
             // TODO: use this.Content to load your game content here
         }
 
@@ -45,7 +49,7 @@ namespace MonoGame_Topic_6___Keyboard_Inputs
             if (keyboardState.IsKeyDown(Keys.Up))
             {
                 pacSpeed.Y = -2;
-
+                
             }
             if (keyboardState.IsKeyDown(Keys.Down))
             {
@@ -62,8 +66,7 @@ namespace MonoGame_Topic_6___Keyboard_Inputs
                 pacSpeed.X = 2;
 
             }
-            pacLocation.X += (int)pacSpeed.X;
-            pacLocation.Y += (int)pacSpeed.Y;
+            pacLocation.Offset(pacSpeed);
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -72,9 +75,22 @@ namespace MonoGame_Topic_6___Keyboard_Inputs
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            _spriteBatch.Begin();
+
+            if (pacSpeed.X > 0)
+                _spriteBatch.Draw(pacTextureRight, pacLocation, Color.White);
+            if (pacSpeed.Y > 0)
+                _spriteBatch.Draw(pacTextureDown, pacLocation, Color.White);
+            if (pacSpeed.X < 0)
+                _spriteBatch.Draw(pacTextureLeft, pacLocation, Color.White);
+            if (pacSpeed.Y < 0)
+                _spriteBatch.Draw(pacTextureUp, pacLocation, Color.White);
+            if (pacSpeed.X == 0 &&  pacSpeed.Y == 0)
+                _spriteBatch.Draw(pacTextureSleep, pacLocation, Color.White);
+
 
             // TODO: Add your drawing code here
-
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
