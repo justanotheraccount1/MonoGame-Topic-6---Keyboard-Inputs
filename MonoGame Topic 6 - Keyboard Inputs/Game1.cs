@@ -9,6 +9,9 @@ namespace MonoGame_Topic_6___Keyboard_Inputs
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Texture2D pacTexture;
+        Rectangle pacLocation;
+        Vector2 pacSpeed;
+        KeyboardState keyboardState;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -20,7 +23,8 @@ namespace MonoGame_Topic_6___Keyboard_Inputs
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            pacLocation = new Rectangle(10, 10, 75, 75);
+            pacSpeed = new Vector2();
             base.Initialize();
         }
 
@@ -35,7 +39,31 @@ namespace MonoGame_Topic_6___Keyboard_Inputs
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            keyboardState = Keyboard.GetState();
+            pacSpeed = new Vector2();
+            pacSpeed = Vector2.Zero;
+            if (keyboardState.IsKeyDown(Keys.Up))
+            {
+                pacSpeed.Y = -2;
 
+            }
+            if (keyboardState.IsKeyDown(Keys.Down))
+            {
+                pacSpeed.Y = 2;
+
+            }
+            if (keyboardState.IsKeyDown(Keys.Left))
+            {
+                pacSpeed.X = -2;
+
+            }
+            if (keyboardState.IsKeyDown(Keys.Right))
+            {
+                pacSpeed.X = 2;
+
+            }
+            pacLocation.X += (int)pacSpeed.X;
+            pacLocation.Y += (int)pacSpeed.Y;
             // TODO: Add your update logic here
 
             base.Update(gameTime);
