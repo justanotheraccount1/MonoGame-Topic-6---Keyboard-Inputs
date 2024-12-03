@@ -25,6 +25,9 @@ namespace MonoGame_Topic_6___Keyboard_Inputs
             // TODO: Add your initialization logic here
             pacLocation = new Rectangle(10, 10, 75, 75);
             pacSpeed = new Vector2();
+            _graphics.PreferredBackBufferWidth = 800;
+            _graphics.PreferredBackBufferHeight = 500;
+            _graphics.ApplyChanges();
             base.Initialize();
         }
 
@@ -48,23 +51,43 @@ namespace MonoGame_Topic_6___Keyboard_Inputs
             pacSpeed = Vector2.Zero;
             if (keyboardState.IsKeyDown(Keys.Up))
             {
-                pacSpeed.Y = -2;
+                pacSpeed.Y = -3;
                 
             }
             if (keyboardState.IsKeyDown(Keys.Down))
             {
-                pacSpeed.Y = 2;
+                pacSpeed.Y = 3;
 
             }
             if (keyboardState.IsKeyDown(Keys.Left))
             {
-                pacSpeed.X = -2;
+                pacSpeed.X = -3;
 
             }
             if (keyboardState.IsKeyDown(Keys.Right))
             {
-                pacSpeed.X = 2;
+                pacSpeed.X = 3;
 
+            }
+            if (pacLocation.X <= 0)
+            {
+                pacSpeed.X = 0;
+                pacLocation.X = 1;
+            }
+            if (pacLocation.Y <= 0)
+            {
+                pacSpeed.Y = 0;
+                pacLocation.Y = 1;
+            }
+            if (pacLocation.X >= 725)
+            {
+                pacSpeed.X = 0;
+                pacLocation.X = 724;
+            }
+            if (pacLocation.Y >= 425)
+            {
+                pacSpeed.Y = 0;
+                pacLocation.Y = 424;
             }
             pacLocation.Offset(pacSpeed);
             // TODO: Add your update logic here
