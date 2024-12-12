@@ -74,7 +74,7 @@ namespace MonoGame_Topic_6___Keyboard_Inputs
                 Exit();
             if (screen == Screen.Game)
             {
-                score += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                
                 greyTribbleRect.X += (int)greyTribbleSpeed.X;
                 greyTribbleRect.Y += (int)greyTribbleSpeed.Y;
                 if (greyTribbleRect.Right >= window.Width || greyTribbleRect.Left <= window.Left)
@@ -87,35 +87,55 @@ namespace MonoGame_Topic_6___Keyboard_Inputs
                 if (keyboardState.IsKeyDown(Keys.Up))
                 {
                     pacSpeed.Y = -3;
+                    score += (6 * (float)gameTime.ElapsedGameTime.TotalSeconds);
                 }
 
                 else if (keyboardState.IsKeyDown(Keys.Down))
                 {
                     pacSpeed.Y = 3;
+                    score += (6 *(float)gameTime.ElapsedGameTime.TotalSeconds);
                 }
                 else if (keyboardState.IsKeyDown(Keys.Left))
                 {
                     pacSpeed.X = -3;
+                    score += (6 * (float)gameTime.ElapsedGameTime.TotalSeconds);
                 }
                 else if (keyboardState.IsKeyDown(Keys.Right))
                 {
                     pacSpeed.X = 3;
+                    score += (6 * (float)gameTime.ElapsedGameTime.TotalSeconds);
                 }
-                if (!window.Contains(pacLocation))
+                if (pacLocation.Right >= window.Right)
                 {
-                    pacLocation.Offset(-pacSpeed);
+                    pacLocation.X = (window.Right - pacLocation.Width - 1);
                 }
-                
+                if (pacLocation.X <= 0)
+                {
+                    pacLocation.X = 1;
+                }
+                if (pacLocation.Bottom >= window.Bottom)
+                {
+                    pacLocation.Y = (window.Bottom - pacLocation.Height - 1);
+                }
+                if (pacLocation.Y <= 0)
+                {
+                    pacLocation.Y = 1;
+                }
                 if (mouseboardState.LeftButton == ButtonState.Pressed)
                 {
                     pacLocation.X = (int)mouseboardState.X;
                     pacLocation.Y = (int)mouseboardState.Y;
                 }
                 pacLocation.Offset(pacSpeed);
-                if (pacLocation.Contains(greyTribbleRect))
+                if (pacLocation.Intersects(greyTribbleRect))
+                {
                     screen = Screen.End;
+                }
+                    
+
             }
-            
+            if (screen == Screen.End) 
+
             
             
             // TODO: Add your update logic here
@@ -124,7 +144,7 @@ namespace MonoGame_Topic_6___Keyboard_Inputs
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin();
             if (screen == Screen.Game)
             {
@@ -139,11 +159,11 @@ namespace MonoGame_Topic_6___Keyboard_Inputs
                 if (pacSpeed.X == 0 && pacSpeed.Y == 0)
                     _spriteBatch.Draw(pacTextureSleep, pacLocation, Color.White);
                 _spriteBatch.Draw(greyTribbleTexture, greyTribbleRect, Color.White);
-                _spriteBatch.DrawString(scoreFont, score.ToString("00.0"), scoreLocation, Color.White);
+                _spriteBatch.DrawString(scoreFont, "Score: " + score.ToString("0.00"), scoreLocation, Color.White);
             }
             if (screen == Screen.End)
             {
-                _spriteBatch.DrawString(scoreFont, "Game Over", scoreLocation, Color.White);
+                _spriteBatch.DrawString(scoreFont, "Game Over    Final Score:" + score.ToString("0.00") + "   High Score:462.72" , scoreLocation, Color.White);
             }
 
 
